@@ -1,7 +1,5 @@
-### cortexlib.py: a library of useful plotter drawing functions accreting over time
+""" cortexlib.py: a library of useful plotter drawing functions accreting over time
 
-
-'''
 some principles to aim for:
 - every shape is handled by default as a list of points appropriate for feeding to patches.Polygon
 - closed polygons should skip the repeated closing point in the list and use closed=True in the patch attrs
@@ -15,7 +13,7 @@ some hatching functions to (re)implement:
 - chaotic random lines through a polygon
 - lines radiating from a single point (on or off a poly's edge)
 
-'''
+"""
 
 import random
 import math
@@ -392,13 +390,30 @@ def vpypeout(outfiles, outname="out", scalew=11, scaleh=8, pagew=14, pageh=11, l
     os.system(vstring)
 
 
-# given a Figure object fig, goes through and draws each individual axis to an intermediate .svg file; then
-# invokes a shell call to vpype to combine all of those files into a single optimized multi-layer final .svg.
-#
-# TODO: Has baked in vpype args and doesn't currently bring in arguments
-# to modify those as need, which would be good to fix at some point.
-def writefigure(fig):
+
+def writefigure(fig, xbounds=[0, 100], ybounds=[0, 100], filename="out", drawingsize=[12, 9], pagesize=[14, 11]):
+    """ given a matplotlib Figure object fig, goes through and draws each individual axis in the figure
+        to an intermediate .svg file; then invokes a shell call to vpype to combine all of those files into
+        a single optimized multi-layer final .svg.
+
+        fig: Figure - the required matplotlib Figure object
+        xbounds: optional [x1, x2] pair defining far left and right coordinates of the figure space to render
+            relative to the literal coordinate values of lines etc in the source drawing
+        ybounds: optional [y1, x1] ibid for top and bottom coordinates
+        filename: optional specific filename to write
+        drawingsize: optional [width, height] pair in inches into which to autoscale the drawing
+        pagesize: optional [width, height] pair in inches to define the page size
+
+        Default xbounds and ybounds may not be terribly helpful, but are generous enough that it should be
+        easy enough in a glance at the resulting drawing to tell what kind of scale issues the defaults cause.
+
+        Default page size corresponds to the 14"x11" bristol I tend to use for most of my plotter drawings.
+        Default drawing size produces a consistent minimum one inch border of blank page on such drawings.
+    """
     outfiles = []
+    fig.frameon = False
+    fig.dpi = 100
+    fig.figsize = drawingsize
     # take in a list of axes and write out individual files
     for a in fig.axes:
         # turn off rendering of every axes except the one we're drawing
@@ -407,13 +422,16 @@ def writefigure(fig):
             j.set_axis_off()
             j.set_visible(False)
 
+        a.set_xlim(xbounds)
+        a.set_ylim(ybounds)
+
         a.set_visible(True)
-        filename = 'out' + str(random.random()) + '.svg'
-        outfiles.append(filename)
-        fig.savefig(filename, pad_inches = 0)
+        tempfile = 'temp' + str(random.random()) + '.svg'
+        outfiles.append(tempfile)
+        fig.savefig(tempfile, pad_inches = 0)
 
     # pipe output through vpype to create final output file
-    vpypeout(outfiles, "out",12,9,14,11)
+    vpypeout(outfiles, filename, drawingsize[0], drawingsize[1], pagesize[0], pagesize[1])
 
     for a in fig.axes:
         a.set_visible(True)
