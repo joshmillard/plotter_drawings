@@ -145,4 +145,4 @@ y_bounds = [-5, height * linelength + 5]
 """
 
 writefigure(fig, xbounds=x_bounds, ybounds=y_bounds, filename="art_large_2021_may")
-plt.show()
+

@@ -35,4 +35,4 @@ for a in axs:
     a.add_collection(collection)
 
 writefigure(fig, xbounds=x_bounds, ybounds=y_bounds, filename="grid_hatch", pagesize=[12, 9], drawingsize=[10, 7])
-plt.show()
+

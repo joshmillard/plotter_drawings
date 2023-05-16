@@ -104,11 +104,11 @@ for a in axs:
 
     count += 1
 
-    x_bounds = [-5, width * length + 5]
-    y_bounds = [-5, height * length + 5]
-
     collection = PatchCollection(patches, match_original=True)
     a.add_collection(collection)
+
+x_bounds = [-5, width * length + 5]
+y_bounds = [-5, height * length + 5]
 
 writefigure(fig,
             xbounds=x_bounds,
