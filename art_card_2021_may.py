@@ -107,11 +107,14 @@ for a in axs:
     x_bounds = [-5, width * length + 5]
     y_bounds = [-5, height * length + 5]
 
-    a.set_xlim(x_bounds)
-    a.set_ylim(y_bounds)
-
     collection = PatchCollection(patches, match_original=True)
     a.add_collection(collection)
 
-writefigure(fig)
+writefigure(fig,
+            xbounds=x_bounds,
+            ybounds=y_bounds,
+            filename="art_card_2021_may",
+            pagesize=[14, 11],
+            drawingsize=[12, 9])
+
 plt.show()
