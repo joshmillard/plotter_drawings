@@ -403,7 +403,19 @@ def vpypeout(outfiles, outname="out", scalew=11, scaleh=8, pagew=14, pageh=11, l
     os.system(vstring)
 
 
-def writefigure(fig, xbounds=[0, 100], ybounds=[0, 100], filename="out", drawingsize=[12, 9], pagesize=[14, 11]):
+def new_artwork():
+    """ wrapper around matplotlib plt.figure() function to hide library-specific call """
+    artwork = plt.figure()
+    return add_layer(artwork)
+
+
+def add_layer(artwork):
+    """ wrapper around matplotlib-centric axes functions """
+    artwork.axes.append(makeaxes(artwork))
+    return artwork
+
+
+def writefigure(fig, xbounds=[0, 100], ybounds=[0, 100], name="out", drawingsize=[12, 9], pagesize=[14, 11]):
     """ given a matplotlib Figure object fig, goes through and draws each individual axis in the figure
         to an intermediate .svg file; then invokes a shell call to vpype to combine all of those files into
         a single optimized multi-layer final .svg.
@@ -412,7 +424,7 @@ def writefigure(fig, xbounds=[0, 100], ybounds=[0, 100], filename="out", drawing
         xbounds: optional [x1, x2] pair defining far left and right coordinates of the figure space to render
             relative to the literal coordinate values of lines etc in the source drawing
         ybounds: optional [y1, x1] ibid for top and bottom coordinates
-        filename: optional specific filename to write
+        name: optional specific filename string to write
         drawingsize: optional [width, height] pair in inches into which to autoscale the drawing
         pagesize: optional [width, height] pair in inches to define the page size
 
@@ -443,7 +455,7 @@ def writefigure(fig, xbounds=[0, 100], ybounds=[0, 100], filename="out", drawing
         fig.savefig(tempfile, pad_inches=0)
 
     # pipe output through vpype to create final output file
-    vpypeout(outfiles, filename, drawingsize[0], drawingsize[1], pagesize[0], pagesize[1])
+    vpypeout(outfiles, name, drawingsize[0], drawingsize[1], pagesize[0], pagesize[1])
 
     for a in fig.axes:
         a.set_visible(True)

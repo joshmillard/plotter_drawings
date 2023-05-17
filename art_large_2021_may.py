@@ -81,7 +81,8 @@ width = 12
 height = 9
 linelength = 8
 
-fig = plt.figure()
+# fig = plt.figure()
+art = new_artwork()
 """ Purpose: create a Figure object onto which one or more axes will be attached
     
     Desired abstraction: put this behind some sort of "new document" function that can be called
@@ -89,7 +90,10 @@ fig = plt.figure()
     e.g. document = new_document()
 """
 
-axs = makeaxesgrid(fig, 4)
+#axs = makeaxesgrid(fig, 4)
+art = add_layer(art)
+art = add_layer(art)
+art = add_layer(art)
 """ Purpose: create one or more axes which will be attached to parent Figure object
     
     Desired abstraction: make "there's one layer" the default outcome of creating a new document in the
@@ -100,7 +104,8 @@ axs = makeaxesgrid(fig, 4)
 # permagrid = getunevengrid(width, height, linelength)
 permagrid = getperturbedgrid(width, height, linelength)
 
-for a in axs:
+# for a in axs:
+for a in art.axes:
     count = -50
     patches = []
     quads = copy.deepcopy(permagrid)
@@ -144,5 +149,4 @@ y_bounds = [-5, height * linelength + 5]
     done its work, instead of plt.show()?
 """
 
-writefigure(fig, xbounds=x_bounds, ybounds=y_bounds, filename="art_large_2021_may")
-
+writefigure(art, xbounds=x_bounds, ybounds=y_bounds, name="art_large_2021_may")
