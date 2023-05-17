@@ -34,5 +34,5 @@ for a in axs:
     collection = PatchCollection(patches, match_original=True)
     a.add_collection(collection)
 
-writefigure(fig, xbounds=x_bounds, ybounds=y_bounds, filename="grid_hatch", pagesize=[12, 9], drawingsize=[10, 7])
+writefigure(fig, xbounds=x_bounds, ybounds=y_bounds, name="grid_hatch", pagesize=[12, 9], drawingsize=[10, 7])
 

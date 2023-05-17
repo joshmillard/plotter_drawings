@@ -141,5 +141,5 @@ for a in axs:
 
 # write this out to svgs
 
-writefigure(prefig, xbounds=x_bounds, ybounds=y_bounds, filename="lazycaterer")
+writefigure(prefig, xbounds=x_bounds, ybounds=y_bounds, name="lazycaterer")
 plt.show()

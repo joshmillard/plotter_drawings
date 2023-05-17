@@ -113,7 +113,7 @@ y_bounds = [-5, height * length + 5]
 writefigure(fig,
             xbounds=x_bounds,
             ybounds=y_bounds,
-            filename="art_card_2021_may",
+            name="art_card_2021_may",
             pagesize=[14, 11],
             drawingsize=[12, 9])
 
